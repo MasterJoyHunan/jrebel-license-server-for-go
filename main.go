@@ -14,7 +14,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&host, "h", "0.0.0.0", "host")
+	flag.StringVar(&host, "h", "127.0.0.1", "host")
 	flag.IntVar(&port, "p", 8877, "port")
 }
 
@@ -22,13 +22,13 @@ func main() {
 	flag.Parse()
 	engine := gin.Default()
 	engine.GET("/", handle.Index)
-	engine.GET("/jrebel/leases", handle.JrebelLeasesHandler)
-	engine.GET("/jrebel/leases/1", handle.JrebelLeases1Handler)
-	engine.GET("/agent/leases", handle.JrebelLeasesHandler)
-	engine.GET("/agent/leases/1", handle.JrebelLeases1Handler)
-	engine.GET("/jrebel/validate-connection", handle.JrebelValidateHandler)
-	engine.GET("/rpc/ping.action", handle.PingHandler)
-	engine.GET("/rpc/obtainTicket.action", handle.ObtainTicketHandler)
-	engine.GET("/rpc/releaseTicket.action", handle.ReleaseTicketHandler)
+	engine.POST("/jrebel/leases", handle.JrebelLeasesHandler)
+	engine.POST("/jrebel/leases/1", handle.JrebelLeases1Handler)
+	engine.POST("/agent/leases", handle.JrebelLeasesHandler)
+	engine.POST("/agent/leases/1", handle.JrebelLeases1Handler)
+	engine.POST("/jrebel/validate-connection", handle.JrebelValidateHandler)
+	engine.POST("/rpc/ping.action", handle.PingHandler)
+	engine.POST("/rpc/obtainTicket.action", handle.ObtainTicketHandler)
+	engine.POST("/rpc/releaseTicket.action", handle.ReleaseTicketHandler)
 	panic(http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), engine))
 }
