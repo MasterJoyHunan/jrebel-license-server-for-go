@@ -1,6 +1,8 @@
 package handle
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-jrebel-license/response"
 	"go-jrebel-license/util"
@@ -14,20 +16,23 @@ func Index(ctx *gin.Context) {
 }
 
 func JrebelLeasesHandler(ctx *gin.Context) {
-	randomness := ctx.Query("randomness")
-	username := ctx.Query("username")
-	guid := ctx.Query("guid")
-	offline := ctx.Query("offline")
-	clientTime := ctx.Query("clientTime")
-
+	randomness := ctx.PostForm("randomness")
+	username := ctx.PostForm("username")
+	guid := ctx.PostForm("guid")
+	offline := ctx.PostForm("offline")
+	clientTime := ctx.PostForm("clientTime")
 	validFrom, validUntil := "null", "null"
 
 	if offline == "true" {
 		ct, _ := strconv.Atoi(clientTime)
-		validFrom = strconv.Itoa(ct + 180*24*60*60*1000)
+		validFrom = clientTime
+		validUntil = strconv.Itoa(ct + 180*24*60*60*1000)
 	}
 
 	signature := util.JrebelSign(randomness, guid, validFrom, validUntil, offline)
+
+	validFromInt, _ := strconv.Atoi(validFrom)
+	validUntilInt, _ := strconv.Atoi(validUntil)
 
 	res := response.JrebelResponse{
 		ServerVersion:         "3.2.4",
@@ -41,15 +46,17 @@ func JrebelLeasesHandler(ctx *gin.Context) {
 		SeatPoolType:          "standalone",
 		StatusCode:            "SUCCESS",
 		Signature:             signature,
-		Offline:               offline,
-		ValidFrom:             validFrom,
-		ValidUntil:            validUntil,
+		Offline:               offline == "true",
+		ValidFrom:             validFromInt,
+		ValidUntil:            validUntilInt,
 		Company:               username,
 		OrderId:               "",
 		ZeroIds:               []string{},
-		LicenseValidFrom:      "1490544001000",
-		LicenseValidUntil:     "1691839999000",
+		LicenseValidFrom:      1490544001000,
+		LicenseValidUntil:     1691839999000,
 	}
+	indent, _ := json.MarshalIndent(res, "", "    ")
+	fmt.Println(string(indent))
 	ctx.JSON(200, res)
 }
 

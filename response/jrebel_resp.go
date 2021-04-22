@@ -12,14 +12,14 @@ type JrebelResponse struct {
 	ServerRandomness      string   `json:"serverRandomness"`      // "    \"serverRandomness\": \"H2ulzLlh7E0=\",\n" +
 	SeatPoolType          string   `json:"seatPoolType"`          // "    \"seatPoolType\": \"standalone\",\n" +
 	StatusCode            string   `json:"statusCode"`            // "    \"statusCode\": \"SUCCESS\",\n" +
-	Offline               string   `json:"offline"`               // "    \"offline\": " + String.valueOf(offline) + ",\n" +
-	ValidFrom             string   `json:"validFrom"`             // "    \"validFrom\": " + validFrom + ",\n" +
-	ValidUntil            string   `json:"validUntil"`            // "    \"validUntil\": " + validUntil + ",\n" +
+	Offline               bool   `json:"offline"`               // "    \"offline\": " + String.valueOf(offline) + ",\n" +
+	ValidFrom             int      `json:"validFrom"`             // "    \"validFrom\": " + validFrom + ",\n" +
+	ValidUntil            int      `json:"validUntil"`            // "    \"validUntil\": " + validUntil + ",\n" +
 	Company               string   `json:"company"`               // "    \"company\": \"Administrator\",\n" +
 	OrderId               string   `json:"orderId"`               // "    \"orderId\": \"\",\n" +
 	ZeroIds               []string `json:"zeroIds"`               // "    \"zeroIds\": [\n" +  ],\n" +
-	LicenseValidFrom      string   `json:"licenseValidFrom"`      // "    \"licenseValidFrom\": 1490544001000,\n" +
-	LicenseValidUntil     string   `json:"licenseValidUntil"`     // "    \"licenseValidUntil\": 1691839999000\n" +
+	LicenseValidFrom      int64    `json:"licenseValidFrom"`      // "    \"licenseValidFrom\": 1490544001000,\n" +
+	LicenseValidUntil     int64    `json:"licenseValidUntil"`     // "    \"licenseValidUntil\": 1691839999000\n" +
 }
 
 type JrebelResponse2 struct {
@@ -32,4 +32,3 @@ type JrebelResponse2 struct {
 	StatusMessage         string `json:"statusMessage"`
 	Username              string `json:"username"`
 }
-
