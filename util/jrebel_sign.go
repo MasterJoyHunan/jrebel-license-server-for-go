@@ -12,6 +12,11 @@ import (
 )
 
 func JrebelSign(clientRandomness, guid, validFrom, validUntil, offline string) string {
+	if offline == "" {
+		offline = "false"
+	} else {
+		offline = "true"
+	}
 	str := ""
 	if offline == "true" {
 		str = strings.Join([]string{clientRandomness, "H2ulzLlh7E0=", guid, offline, validFrom, validUntil}, ";")
