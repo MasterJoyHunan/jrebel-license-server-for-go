@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jrebel-ingress
+spec:
+  rules:
+    - host: jrebel.masterjoy.top
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: jrebel
+                port:
+                  number: 8877
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jrebel
+spec:
+  selector:
+    app: jrebel
+  ports:
+    - port: 8877
+      targetPort: 8877
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jrebel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jrebel
+  template:
+    metadata:
+      name: jrebel
+      labels:
+        app: jrebel
+    spec:
+      containers:
+        - name: jrebel
+          image: registry.cn-hangzhou.aliyuncs.com/tanwuyang/jrebel:v2021_04_22_09_12
+          ports:
+            - containerPort: 8877
